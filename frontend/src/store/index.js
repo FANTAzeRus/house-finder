@@ -1,5 +1,6 @@
 import {createStore} from "vuex";
 import axios from "axios";
+import {setup} from "../config.js";
 
 export default createStore({
   state: {
@@ -19,7 +20,7 @@ export default createStore({
   actions: {
     initApp({commit}) {
       commit("startLoading");
-      axios.get("http://house-finder.test/api/init").then(({data}) => {
+      axios.get(`${setup.apiUrl}/init`).then(({data}) => {
         if (data.success) {
           commit("setInitData", data.init_data);
           commit("startApp");
@@ -41,7 +42,7 @@ export default createStore({
         .forEach((k) => (data[k] = payload[k]));
 
       axios
-        .post("http://house-finder.test/api/search", data)
+        .post(`${setup.apiUrl}/search`, data)
         .then(({data}) => {
           if (data.success) {
             commit("setFindResult", data.finded);
